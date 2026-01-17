@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leandro Belli - CV</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .lang-switch {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #fff;
+            border: 1px solid #ccc;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-family: inherit;
+            font-size: 14px;
+        }
+
+        .lang-switch:hover {
+            background: #f0f0f0;
+        }
+
+        @media print {
+            .lang-switch {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <button id="langToggle" class="lang-switch" onclick="toggleLanguage()">Español</button>
+    <div id="cv-container" class="cv-container">
+        <!-- Content will be injected here -->
+    </div>
+
+    <!-- Load the data file -->
+    <script src="cv-data.js"></script>
+
+    <script>
+        let currentLang = 'en';
+
+        function render(lang) {
+            document.documentElement.lang = lang;
+            const container = document.getElementById('cv-container');
+            const data = cvData[lang];
+
+            // Update Title
+            document.title = data.header.name + ' - CV';
+
+            // Toggle Button Text
+            const toggleBtn = document.getElementById('langToggle');
+            toggleBtn.textContent = lang === 'en' ? 'Español' : 'English';
+
+            let html = '';
+
+            // --- Header ---
+            const headerData = data.header;
+            html += `
+                <header>
+                    <h1>${headerData.name}</h1>
+                    <div class="contact-info">
+                        <span>${headerData.contacts.location.icon} ${headerData.contacts.location.text}</span>
+                        <span>${headerData.contacts.phone.icon} <a href="${headerData.contacts.phone.link}">${headerData.contacts.phone.text}</a></span>
+                        <span>${headerData.contacts.email.icon} <a href="${headerData.contacts.email.link}">${headerData.contacts.email.text}</a></span>
+                        <span>${headerData.contacts.website.icon} <a href="${headerData.contacts.website.link}" target="_blank">${headerData.contacts.website.text}</a></span>
+                    </div>
+                </header>
+            `;
+
+            // --- Experience ---
+            const expSection = data.sections.experience;
+            html += `<section id="experience"><h2>${expSection}</h2>`;
+
+            data.experience.forEach(company => {
+                html += `
+                    <div class="company-group">
+                        <div class="company-header">
+                            <span class="company-main-title">${company.company}</span>
+                            <span class="company-total-date">${company.location}</span>
+                        </div>
+                        <div class="role-group">
+                `;
+
+                company.roles.forEach(role => {
+                    html += `
+                        <div class="role-item">
+                            <div class="role-header">
+                                <span class="role-title">${role.title}</span>
+                                <span class="role-date">${role.date}</span>
+                            </div>
+                    `;
+
+                    const desc = role.description;
+                    if (desc && desc.length > 0) {
+                        html += `<div class="description"><ul>`;
+                        desc.forEach(item => {
+                            html += `<li>${item}</li>`;
+                        });
+                        html += `</ul></div>`;
+                    }
+                    html += `</div>`; // Close role-item
+                });
+
+                html += `</div></div>`; // Close role-group and company-group
+            });
+            html += `</section>`;
+
+            // --- Education ---
+            const eduSection = data.sections.education;
+            html += `<section id="education"><h2>${eduSection}</h2>`;
+
+            data.education.forEach(edu => {
+                html += `
+                    <div class="company-group">
+                        <div class="company-header">
+                            <span class="company-main-title">${edu.school}</span>
+                            <span class="company-total-date">${edu.location}</span>
+                        </div>
+                        <div class="role-group">
+                `;
+
+                edu.roles.forEach(role => {
+                    html += `
+                        <div class="role-item">
+                            <div class="role-header">
+                                <span class="role-title">${role.title}</span>
+                                <span class="role-date">${role.date}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += `</div></div>`;
+            });
+            html += `</section>`;
+
+            // --- Skills ---
+            const skillsSection = data.sections.skills;
+            html += `<section id="skills"><h2>${skillsSection}</h2><div class="skills-grid">`;
+
+            data.skills.categories.forEach(cat => {
+                html += `
+                    <div class="skill-category">${cat.name}</div>
+                    <div>${cat.items}</div>
+                `;
+            });
+            html += `</div></section>`;
+
+            // --- Honors ---
+            const honorsSection = data.sections.honors;
+            html += `<section id="honors"><h2>${honorsSection}</h2>`;
+
+            data.honors.forEach(honor => {
+                html += `
+                    <div class="company-group">
+                        <div class="company-header">
+                            <span class="company-main-title">${honor.title}</span>
+                        </div>
+                        <div class="role-group">
+                            <div class="role-item">
+                `;
+                const desc = honor.description;
+                if (desc) {
+                    html += `<div class="description">${desc}</div>`;
+                }
+                html += `</div></div></div>`;
+            });
+            html += `</section>`;
+
+            container.innerHTML = html;
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'es' : 'en';
+            render(currentLang);
+        }
+
+        // Initial Render
+        // Check for browser language preference
+        const userLang = navigator.language || navigator.userLanguage;
+        if (userLang.startsWith('es')) {
+            currentLang = 'es';
+        }
+        render(currentLang);
+
+    </script>
+</body>
+
+</html>

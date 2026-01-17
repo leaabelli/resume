@@ -1,0 +1,271 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+:root {
+    --primary-color: #111;
+    --secondary-color: #555;
+    --border-color: #ccc;
+    --font-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --line-height: 1.5;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 2rem;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-main);
+    line-height: var(--line-height);
+    color: var(--primary-color);
+    background-color: #f0f0f0;
+    font-size: 10pt;
+    letter-spacing: -0.01em;
+}
+
+.cv-container {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 15mm 20mm;
+    margin: 2rem auto;
+    background-color: white;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+}
+
+/* Header */
+header {
+    border-bottom: 1px solid #000;
+    padding-bottom: var(--spacing-sm);
+    margin-bottom: var(--spacing-lg);
+    text-align: center;
+}
+
+h1 {
+    font-size: 24pt;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: -0.03em;
+}
+
+.contact-info {
+    font-size: 9pt;
+    color: var(--secondary-color);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+    align-items: center;
+}
+
+.contact-info span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.contact-info a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.contact-info a:hover {
+    text-decoration: underline;
+    color: black;
+}
+
+/* Sections */
+section {
+    margin-bottom: var(--spacing-lg);
+}
+
+h2 {
+    font-size: 14pt;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-bottom: 2px solid #000;
+    padding-bottom: 4px;
+    margin-bottom: var(--spacing-md);
+    letter-spacing: 0.05em;
+}
+
+/* Grouped Experience (Timeline style) */
+.company-group {
+    margin-bottom: var(--spacing-md);
+    page-break-inside: avoid;
+}
+
+.company-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: var(--spacing-sm);
+}
+
+.company-main-title {
+    font-weight: 700;
+    font-size: 12pt;
+}
+
+.company-total-date {
+    font-size: 9pt;
+    color: var(--secondary-color);
+}
+
+.role-group {
+    margin-left: 8px;
+    /* Slightly indented to give dots more room from edge */
+    padding-left: 14px;
+    border-left: 2px solid #ddd;
+    margin-bottom: var(--spacing-sm);
+}
+
+.role-item {
+    margin-bottom: var(--spacing-md);
+    position: relative;
+}
+
+/* Dot indicator for timeline */
+.role-item::before {
+    content: "";
+    position: absolute;
+    left: -20px;
+    top: 6px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #666;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 1px #ddd;
+}
+
+/* First item dot is black/active */
+.role-item:first-child::before {
+    background-color: #000;
+    box-shadow: 0 0 0 1px #000;
+}
+
+.role-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 2px;
+}
+
+.role-title {
+    font-weight: 600;
+    font-size: 11pt;
+    color: #111;
+}
+
+.role-date {
+    font-size: 9pt;
+    color: #444;
+    font-style: italic;
+}
+
+.description {
+    margin-top: 4px;
+    font-weight: 300;
+}
+
+.description ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.description li {
+    position: relative;
+    padding-left: 12px;
+    margin-bottom: 3px;
+    color: #222;
+}
+
+.description li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #000;
+    font-size: 10px;
+    line-height: 1.6;
+}
+
+/* Skills Grid */
+.skills-grid {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 8px 16px;
+}
+
+.skill-category {
+    font-weight: 600;
+    font-size: 10pt;
+}
+
+/* Print Styles */
+@page {
+    size: A4;
+    margin: 15mm;
+}
+
+@media print {
+    body {
+        background: white;
+        -webkit-print-color-adjust: exact;
+    }
+
+    .cv-container {
+        width: 100%;
+        margin: 0;
+        box-shadow: none;
+        /* Extra padding on sides to ensure content isn't cut by printer margins */
+        padding: 0 8mm 0 8mm;
+        min-height: auto;
+    }
+
+    /* Prevent breaking inside logical blocks */
+    .company-group,
+    .role-item,
+    .item,
+    .skills-grid {
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+
+    /* Prevent breaking after headers */
+    h2,
+    .company-header,
+    .role-header {
+        page-break-after: avoid;
+        break-after: avoid;
+    }
+
+    .role-group {
+        border-left-color: #ccc !important;
+    }
+
+    body,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    li,
+    span,
+    a {
+        color: #000 !important;
+    }
+
+    .contact-info a,
+    .role-date,
+    .company-total-date,
+    .description li,
+    .company-main-title {
+        color: #222 !important;
+    }
+}
